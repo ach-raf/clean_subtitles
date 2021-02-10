@@ -23,7 +23,7 @@ this will open the "send to" directory so we can add our bash script.
 
 To run the python script you must create clean_srt.cmd (this name will show on the send to menu)
 
-clean_srt.cmd script that send the path of the selected file or files to our python script
+clean_srt.cmd script that sends the path of the selected file or files to our python script
 ```
 @echo off
 cls
