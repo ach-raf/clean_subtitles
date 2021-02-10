@@ -1,7 +1,7 @@
 # clean_subtitles
 Remove Ads from your subtitles.
 
-Ad example:
+Ad example: in images folder.
 
 ![Ad Example](images/ad_example.png)
 
