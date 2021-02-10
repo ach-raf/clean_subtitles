@@ -1,6 +1,10 @@
 # clean_subtitles
 Remove Ads from your subtitles.
 
+Ad example:
+
+![](results_example/lifetime_messages_rank.png)
+
 A little python script to clean your donwloaded subtitles from opensubtitles.org.
 
 # Usage:
