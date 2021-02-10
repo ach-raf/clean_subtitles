@@ -3,7 +3,7 @@ Remove Ads from your subtitles.
 
 Ad example:
 
-![Ad example](images/ad_example.png)
+![Ad Example](images/ad_example.png)
 
 A little python script to clean your donwloaded subtitles from opensubtitles.org.
 
