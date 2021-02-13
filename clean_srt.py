@@ -65,7 +65,7 @@ def clean_folder_of_srt(_file_path, _ads_to_remove):
     _directory_path = os.path.dirname(_file_path)
     for filename in os.listdir(_directory_path):
         if filename[-3:].lower() in SUPPORTED_MEDIA:
-            remove_ads_from_srt(_file_path, _ads_to_remove)
+            remove_ads_from_srt(f'{_directory_path}\\{filename}', _ads_to_remove)
 
 
 def clean_selected_files():
