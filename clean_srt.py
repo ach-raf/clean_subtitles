@@ -6,7 +6,7 @@ SUPPORTED_MEDIA = ['srt']
 SEPARATOR = ','
 
 # path for the txt file that you can edit with new ads separated by SEPARATOR
-ads_file_path = r'C:\path\to\ads.txt'
+ads_file_path = r'C:\Users\USER\PycharmProjects\clean_subtitles\ads.txt'
 
 
 def read_file(_file_path):
@@ -42,6 +42,28 @@ def save_file(_file_path, _content):
         _file_to_save.write(str(_content))
 
 
+def clean_ads_regex(_srt_file_path, _ads_to_remove):
+    base_name, file_name = os.path.split(_srt_file_path)
+
+    _text = read_file(f'{_srt_file_path[:-4]}.srt')
+    between_brackets_regex = r'\[([^]]+)\]'
+    # clean _ads_to_remove from empty strings
+    _ads_to_remove = [ad for ad in _ads_to_remove if ad]
+
+    #create a dynamic regex based on the start of each ad.
+    regex_list = []
+    for _ad in _ads_to_remove:
+        regex_list.append(f'(^{_ad}.*$)')
+
+    join_ads_regex = ('|'.join(map(re.escape, regex_list)).replace('\\', ''))
+    _file_content = re.sub(pattern = join_ads_regex, repl = '', string = _text, flags=re.MULTILINE)
+
+    # result = re.findall(join_ads_regex, _text, re.MULTILINE)
+
+    save_file(_srt_file_path, _file_content)
+    print(f'{file_name} cleaned!')
+        
+
 def remove_ads_from_srt(_srt_file_path, _ads_to_remove):
     """
     this function cleans an srt file by replacing all the entries in the _ads_to_remove list by an empty string ''
@@ -68,7 +90,7 @@ def clean_folder_of_srt(_file_path, _ads_to_remove):
             remove_ads_from_srt(f'{_directory_path}\\{filename}', _ads_to_remove)
 
 
-def clean_selected_files():
+def clean_selected_files(_ads_to_remove):
     """
     we can loop through the selected file(s) respective path,
     we can get the path from a list returned by the sys.argv variable sent by the script
@@ -76,7 +98,7 @@ def clean_selected_files():
     """
     subtitles = sys.argv[1:]
     for subtitle in subtitles:
-        remove_ads_from_srt(subtitle, ads_to_remove)
+        clean_ads_regex(subtitle, _ads_to_remove)
 
 
 def print_menu():  # much graphic, very handsome
@@ -89,11 +111,12 @@ def print_menu():  # much graphic, very handsome
 
 def options_menu():
     user_choice = True
+    ads_to_remove = get_ads_list(ads_file_path)
     while user_choice:
         print_menu()
         user_choice = input('What would you like to do? ')
         if user_choice == '1':
-            clean_selected_files()
+            clean_selected_files(ads_to_remove)
             user_choice = False
         elif user_choice == '2':
             clean_folder_of_srt(sys.argv[1], ads_to_remove)
@@ -105,6 +128,4 @@ def options_menu():
             print("\nNot a valid choice try again")
 
 
-ads_to_remove = read_file(ads_file_path).split(',')
-ads_to_remove = [ad.strip() for ad in ads_to_remove]
 options_menu()

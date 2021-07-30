@@ -17,6 +17,9 @@ Right click on any .srt file or files, send to clean_srt.cmd.
 
 -Python 3.
 
+# How it works:
+-I use regular expresions to match each keyword from the ads.txt file, with the start of each line in the subtitle file, and delete the whole line if there is a match.
+
 # Setup:
 Create a txt file to put the unwanted ads.
 
