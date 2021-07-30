@@ -64,17 +64,6 @@ def clean_ads_regex(_srt_file_path, _ads_to_remove):
     print(f'{file_name} cleaned!')
         
 
-def remove_ads_from_srt(_srt_file_path, _ads_to_remove):
-    """
-    this function cleans an srt file by replacing all the entries in the _ads_to_remove list by an empty string ''
-    you can achieve the same results as the regex by simply looping through _ads_to_remove,
-    and replacing each item by an empty string.
-    I choose to do it this way to try something new.
-    """
-    join_ads_regex = re.compile('|'.join(map(re.escape, _ads_to_remove)))
-    _file_content = join_ads_regex.sub('', read_file(_srt_file_path))
-    save_file(_srt_file_path, _file_content)
-    print(f'{_srt_file_path} cleaned!')
 
 
 def clean_folder_of_srt(_file_path, _ads_to_remove):
@@ -87,7 +76,7 @@ def clean_folder_of_srt(_file_path, _ads_to_remove):
     _directory_path = os.path.dirname(_file_path)
     for filename in os.listdir(_directory_path):
         if filename[-3:].lower() in SUPPORTED_MEDIA:
-            remove_ads_from_srt(f'{_directory_path}\\{filename}', _ads_to_remove)
+            clean_ads_regex(f'{_directory_path}\\{filename}', _ads_to_remove)
 
 
 def clean_selected_files(_ads_to_remove):
