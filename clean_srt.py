@@ -6,7 +6,7 @@ SUPPORTED_MEDIA = ['srt']
 SEPARATOR = ','
 
 # path for the txt file that you can edit with new ads separated by SEPARATOR
-ads_file_path = r'D:\PycharmProjects\clean_subtitles\ads.txt'
+ads_file_path = r'C:\path\to\ads.txt'
 
 
 def read_file(_file_path):
