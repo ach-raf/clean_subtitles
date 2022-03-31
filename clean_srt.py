@@ -6,7 +6,7 @@ SUPPORTED_MEDIA = ['srt']
 SEPARATOR = ','
 
 # path for the txt file that you can edit with new ads separated by SEPARATOR
-ads_file_path = r'C:\path\to\ads.txt'
+ads_file_path = r'D:\PycharmProjects\clean_subtitles\ads.txt'
 
 
 def read_file(_file_path):
@@ -62,12 +62,12 @@ def clean_ads_regex(_srt_file_path, _ads_to_remove):
     # result = re.findall(join_ads_regex, _text, re.MULTILINE)
 
     save_file(f'{_srt_file_path[:-4]}.srt', _file_content)
-    print(f'{file_name} cleaned!')
+    print(f'{_srt_file_path[:-4]}.srt cleaned!')
 
 
 def clean_folder_of_srt(_file_path, _ads_to_remove):
     """
-    takes the path of a selected file and get it's current directory, and clean all ads on that directory.
+    takes the path of a selected file and get it's current directory, and clean all ads from srt files, in that directory.
     :param _file_path: path of selected file
     :param _ads_to_remove: list of ads to remove
     :void: calls the remove_ads_from_srt() for each supported file
@@ -97,7 +97,7 @@ def print_menu():  # much graphic, very handsome
     print(66 * '-')
 
 
-def options_menu():
+def main():
     user_choice = True
     ads_to_remove = get_ads_list(ads_file_path)
     while user_choice:
@@ -116,4 +116,5 @@ def options_menu():
             print("\nNot a valid choice try again")
 
 
-options_menu()
+if __name__ == '__main__':
+    main()
