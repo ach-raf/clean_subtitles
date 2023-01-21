@@ -38,8 +38,6 @@ A little python script to clean ads from your subtitles, downloaded from opensub
 
 - clean_subtitle.cmd (this name will show on the send to menu), is the script that sends the path of the selected file or files to our python script.
 
-- To run the python script you must modify clean_subtitle.cmd.
-
 - Modify the path to the python script in the clean_subtitle.cmd file.
 
 - Right click on any subtitle file or files, send to clean_subtitle.cmd.
