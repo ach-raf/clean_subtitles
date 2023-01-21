@@ -34,6 +34,8 @@ A little python script to clean ads from your subtitles, downloaded from opensub
 
 - On windows "Ctrl+R" and run "shell:sendto", this will open the "send to" directory so we can add our bash script.
 
+- Copy the clean_subtitle.cmd file to the "send to" directory.
+
 - clean_subtitle.cmd (this name will show on the send to menu), is the script that sends the path of the selected file or files to our python script.
 
 - To run the python script you must modify clean_subtitle.cmd.
