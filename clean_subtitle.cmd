@@ -1,4 +1,4 @@
 @echo off
 cls
-python C:\path\to\script\clean_subs.py %*
+python C:\path\to\script\clean_subtitles.py %*
 pause

@@ -47,6 +47,6 @@ A little python script to clean ads from your subtitles, downloaded from opensub
 ```
 @echo off
 cls
-python3 path_to_script\clean_subs.py %*
+python3 path_to_script\clean_subtitles.py %*
 pause
 ```
