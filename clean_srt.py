@@ -1,23 +1,23 @@
 import os
 import sys
 import re
+import util
+from pathlib import Path
 
-SUPPORTED_MEDIA = ['srt']
-SEPARATOR = ','
+
+# ================================ Paths =============================
+CURRENT_DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+INFO_FILE_PATH = os.path.join(CURRENT_DIR_PATH, "info.ini")
+# ====================================================================
+
+# =============== Reading from info.ini ==============================
+CONFIG_INFO = util.read_info_file(INFO_FILE_PATH)
+SUPPORTED_MEDIA = [
+    media for media in CONFIG_INFO['supported_media'].split(',')]
+ADS_SEPARATOR = CONFIG_INFO['ads_separator']
 
 # path for the txt file that you can edit with new ads separated by SEPARATOR
-ads_file_path = r'D:\PycharmProjects\clean_subtitles\ads.txt'
-
-
-def read_file(_file_path):
-    """
-    a simple function that open a file in read mode
-    :param _file_path: path to a certain file
-    :return: opened file
-    """
-    with open(_file_path, 'r', encoding='utf8') as _file_to_read:
-        _file = _file_to_read.read()
-    return _file
+ADS_FILE_PATH = CONFIG_INFO['ads_file_path']
 
 
 def get_ads_list(_ads_file_path):
@@ -26,26 +26,18 @@ def get_ads_list(_ads_file_path):
     :param _ads_file_path: path to the ads file
     :return: a list of each ad
     """
-    _ads_to_remove = read_file(_ads_file_path).split(SEPARATOR)
+    _ads_to_remove = util.read_file(_ads_file_path).split(ADS_SEPARATOR)
     _ads_to_remove = [ad.strip() for ad in _ads_to_remove]
     return _ads_to_remove
 
 
-def save_file(_file_path, _content):
-    """
-    a function that replaces the content of the file with the new _content
-    :param _file_path: path to a certain file
-    :param _content: the content you want to write to the file
-    :return: create or replace a file at the specified _file_path
-    """
-    with open(_file_path, 'w', encoding='utf8') as _file_to_save:
-        _file_to_save.write(str(_content))
+def clean_ads_regex(_subtitle_file_path, _ads_to_remove):
+    full_path = Path(_subtitle_file_path)
+    directory_name = full_path.parent
+    file_name = full_path.stem
+    file_extension = full_path.suffix
 
-
-def clean_ads_regex(_srt_file_path, _ads_to_remove):
-    base_name, file_name = os.path.split(_srt_file_path)
-
-    _text = read_file(f'{_srt_file_path[:-4]}.srt')
+    _content = util.read_file(full_path.absolute())
     between_brackets_regex = r'\[([^]]+)\]'
     # clean _ads_to_remove from empty strings
     _ads_to_remove = [ad for ad in _ads_to_remove if ad]
@@ -57,25 +49,26 @@ def clean_ads_regex(_srt_file_path, _ads_to_remove):
 
     join_ads_regex = ('|'.join(map(re.escape, regex_list)).replace('\\', ''))
     _file_content = re.sub(pattern=join_ads_regex, repl='',
-                           string=_text, flags=re.MULTILINE)
+                           string=_content, flags=re.MULTILINE)
 
     # result = re.findall(join_ads_regex, _text, re.MULTILINE)
 
-    save_file(f'{_srt_file_path[:-4]}.srt', _file_content)
-    print(f'{_srt_file_path[:-4]}.srt cleaned!')
+    util.save_file(full_path.absolute(), _file_content)
+    print(f'{full_path.absolute()} cleaned!')
 
 
-def clean_folder_of_srt(_file_path, _ads_to_remove):
+def clean_folder_of_srt(_subtitle_file_path, _ads_to_remove):
     """
     takes the path of a selected file and get it's current directory, and clean all ads from srt files, in that directory.
     :param _file_path: path of selected file
     :param _ads_to_remove: list of ads to remove
     :void: calls the remove_ads_from_srt() for each supported file
     """
-    _directory_path = os.path.dirname(_file_path)
-    for filename in os.listdir(_directory_path):
+    full_path = Path(_subtitle_file_path)
+    directory_name = full_path.parent
+    for filename in os.listdir(directory_name):
         if filename[-3:].lower() in SUPPORTED_MEDIA:
-            clean_ads_regex(f'{_directory_path}\\{filename}', _ads_to_remove)
+            clean_ads_regex(full_path.absolute(), _ads_to_remove)
 
 
 def clean_selected_files(_ads_to_remove):
@@ -99,7 +92,7 @@ def print_menu():  # much graphic, very handsome
 
 def main():
     user_choice = True
-    ads_to_remove = get_ads_list(ads_file_path)
+    ads_to_remove = get_ads_list(ADS_FILE_PATH)
     while user_choice:
         print_menu()
         user_choice = input('What would you like to do? ')
